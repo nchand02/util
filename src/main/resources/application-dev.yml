@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: guest-management-api-dev
+
+app:
+  jwt:
+    secret: DEV-TEST-ONLY-CHANGE-ME
+    expiration-ms: 86400000
+  cors:
+    allowed-origins: http://localhost:3000,http://localhost:5173
+  oauth2:
+    authorized-redirect-uris: http://localhost:3000/oauth2/redirect,http://localhost:5173/oauth2/redirect

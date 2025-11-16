@@ -1,3 +1,98 @@
+# util
+
+## Overview
+Spring Boot backend (guest management API) plus React frontend. Frontend is deployed to GitHub Pages at `https://nchand02.github.io/util/`. Backend JAR is built via Maven CI workflow and can be deployed separately (e.g. to a cloud host) referenced by the frontend via `REACT_APP_API_BASE_URL`.
+
+## Project Structure
+```
+backend (Spring Boot) : src/main/java,...
+frontend (React)      : frontend/
+GitHub Actions        : .github/workflows/
+```
+
+## Local Development
+### Backend
+Use the dev profile for local defaults (non‑secret):
+```bash
+./mvnw spring-boot:run -Dspring.profiles.active=dev
+```
+Run tests:
+```bash
+./mvnw test
+```
+
+### Frontend
+```bash
+cd frontend
+npm install
+npm start
+```
+
+## Environment Variables (Secrets)
+Set these as GitHub repository secrets (Settings → Secrets and variables → Actions → New repository secret):
+
+| Secret Name | Purpose |
+|-------------|---------|
+| `JWT_SECRET` | Signing JWT tokens |
+| `GOOGLE_CLIENT_ID` | Google OAuth client id (optional) |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth secret (optional) |
+| `GITHUB_CLIENT_ID` | GitHub OAuth client id (optional) |
+| `GITHUB_CLIENT_SECRET` | GitHub OAuth secret (optional) |
+| `CORS_ALLOWED_ORIGINS` | Comma list of allowed origins (include Pages URL) |
+| `OAUTH2_REDIRECT_URIS` | Comma list of redirect URIs |
+| `REACT_APP_API_BASE_URL` | Base URL of deployed backend API |
+
+## Production Configuration
+`application.yml` now requires secrets (no fallbacks). Provide them via environment variables in deployment or GitHub Actions.
+
+## GitHub Actions Workflows
+1. `backend.yml`: Builds & tests backend, publishes JAR artifact.
+2. `frontend-pages.yml`: Builds React app and deploys to GitHub Pages.
+
+## Deploying Frontend to GitHub Pages
+Push changes to `main` affecting `frontend/` to trigger workflow. Workflow uses:
+```yaml
+REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
+```
+Set that secret to the public backend API base (e.g. `https://api.example.com`).
+
+## Adding a Backend Host
+Deploy the JAR (artifact) to a runtime (Render, Railway, AWS Elastic Beanstalk, etc.) setting required env vars. Example run:
+```bash
+export JWT_SECRET=yourStrongSecret
+export CORS_ALLOWED_ORIGINS=https://nchand02.github.io/util
+export OAUTH2_REDIRECT_URIS=https://nchand02.github.io/util/oauth2/redirect
+java -jar util-0.0.1-SNAPSHOT.jar
+```
+
+## CORS
+Ensure `CORS_ALLOWED_ORIGINS` includes `https://nchand02.github.io/util`. Frontend will call the backend using `REACT_APP_API_BASE_URL`.
+
+## Cleaning the Repo
+`.gitignore` excludes build artifacts (`target/`, `frontend/build/`, `data/`). If already committed, remove them:
+```bash
+git rm -r --cached target data frontend/build
+git commit -m "Remove build artifacts"
+```
+
+## GitHub Pages Cache Busting
+`homepage` field in `package.json` sets correct asset paths. A `.nojekyll` file is added in build via `build:pages` script to avoid Jekyll processing.
+
+## Manual Frontend Build
+```bash
+cd frontend
+REACT_APP_API_BASE_URL=http://localhost:8080 npm run build
+```
+Output in `frontend/build/` can be served statically.
+
+## Security Notes
+No secrets stored in VCS; all sensitive values sourced from environment.
+Change the dev secret in `application-dev.yml` if risk of accidental production use.
+
+## Next Steps
+1. Deploy backend to a public host.
+2. Set `REACT_APP_API_BASE_URL` to that host URL.
+3. Confirm CORS and OAuth flows (when OAuth configured).
 # Guest Management Application - Backend
 
 A production-ready Spring Boot application with OAuth2 authentication and JWT token-based authorization.

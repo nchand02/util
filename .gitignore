@@ -1,3 +1,31 @@
+# Maven / Java
+target/
+*.log
+*.class
+*.jar
+*.war
+*.ear
+
+# H2 database files
+data/guestdb*.
+
+# Node / Frontend
+frontend/node_modules/
+frontend/build/
+frontend/.DS_Store
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Env / Secrets
+.env
+frontend/.env
+
+# Misc
+TEST_RESULTS.md
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
