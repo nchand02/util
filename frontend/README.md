@@ -1,8 +1,44 @@
-# Getting Started with Create React App
+# Guest Management Application - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, responsive React application with OAuth2 authentication and guest management features.
 
-## Available Scripts
+## 🚀 Features
+
+- ✅ OAuth2 Login (Google, GitHub, Microsoft, Facebook)
+- ✅ Responsive Design (Mobile, Tablet, Desktop)
+- ✅ Protected Routes
+- ✅ Guest Management (CRUD Operations)
+- ✅ Modern UI with Smooth Animations
+- ✅ Error Boundaries and Handling
+- ✅ JWT Token Management
+
+## 🛠️ Setup Instructions
+
+### Step 1: Install Dependencies
+
+```bash
+npm install
+```
+
+### Step 2: 🔐 Configure Environment (IMPORTANT!)
+
+**⚠️ NEVER commit `.env` files to Git!**
+
+```bash
+# Copy the environment template
+cp .env.template .env
+
+# Edit .env and add your backend API URL
+nano .env  # or use your preferred editor
+```
+
+**Example `.env` file:**
+```env
+REACT_APP_API_URL=http://localhost:8080
+REACT_APP_ENV=development
+```
+
+## 📜 Available Scripts
 
 In the project directory, you can run:
 

@@ -28,45 +28,37 @@ A production-ready Spring Boot application with OAuth2 authentication and JWT to
 cd /path/to/util
 ```
 
-### Step 2: Configure OAuth2 Providers
+### Step 2: 🔐 Configure Secrets (IMPORTANT!)
 
-Create a `.env` file in the root directory or set environment variables:
+**⚠️ NEVER commit `.env` files to Git! This repository is public.**
 
 ```bash
-# Copy the example file
-cp .env.example .env
+# Copy the environment template
+cp .env.template .env
 
-# Edit .env and add your OAuth2 credentials
+# Edit .env and add your actual OAuth2 credentials
+nano .env  # or use your preferred editor
 ```
 
-#### Get OAuth2 Credentials:
+See `OAUTH_SETUP.md` for detailed instructions on obtaining OAuth2 credentials.
 
-**Google OAuth2:**
-1. Go to https://console.cloud.google.com/apis/credentials
-2. Create OAuth 2.0 Client ID
-3. Add authorized redirect URI: `http://localhost:8080/login/oauth2/code/google`
-4. Copy Client ID and Secret
+**📖 Security Documentation:**
+- `SECURITY.md` - Complete security guide
+- `OAUTH_SETUP.md` - OAuth provider setup
+- `.env.template` - Environment variable template
 
-**GitHub OAuth2:**
-1. Go to https://github.com/settings/developers
-2. Create New OAuth App
-3. Authorization callback URL: `http://localhost:8080/login/oauth2/code/github`
-4. Copy Client ID and Secret
+**For detailed OAuth setup instructions, see `OAUTH_SETUP.md`**
 
-**Microsoft OAuth2:**
-1. Go to https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps
-2. Register an application
-3. Add redirect URI: `http://localhost:8080/login/oauth2/code/microsoft`
-4. Copy Application (client) ID and create a Client Secret
+### Step 3: Generate JWT Secret
 
-**Facebook OAuth2:**
-1. Go to https://developers.facebook.com/apps
-2. Create an App
-3. Add Facebook Login product
-4. Valid OAuth Redirect URIs: `http://localhost:8080/login/oauth2/code/facebook`
-5. Copy App ID and App Secret
+```bash
+# Generate a strong random secret for JWT signing
+openssl rand -base64 32
+```
 
-### Step 3: Update application.yml
+Add the generated secret to your `.env` file as `JWT_SECRET`.
+
+### Step 4: Update application.yml
 
 Edit `src/main/resources/application.yml` and update:
 
@@ -216,6 +208,14 @@ git push heroku main
 
 ### Environment Variables for Production
 
+⚠️ **IMPORTANT:** Never commit production secrets to Git!
+
+Use your hosting platform's environment variable management:
+- **Heroku:** `heroku config:set VAR_NAME=value`
+- **Railway:** Variables tab in dashboard
+- **AWS/Azure/GCP:** Use their secret management services
+
+Required environment variables:
 ```bash
 GOOGLE_CLIENT_ID=...
 GOOGLE_CLIENT_SECRET=...
@@ -228,6 +228,8 @@ FACEBOOK_CLIENT_SECRET=...
 JWT_SECRET=your-strong-secret-key-here
 CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
 ```
+
+**📖 See `SECURITY.md` for complete deployment security guide**
 
 ## 📝 Project Structure
 

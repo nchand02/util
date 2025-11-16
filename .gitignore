@@ -36,6 +36,11 @@ build/
 .env
 .env.local
 .env.*.local
+.env.production
+.env.development
+*.secret
+application-local.yml
+application-secrets.yml
 
 ### Database ###
 data/
