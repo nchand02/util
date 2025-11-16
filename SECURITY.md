@@ -1,5 +1,33 @@
 # 🔐 Security Guide
 
+---
+
+## 🚨 URGENT: Exposed Credentials Alert
+
+**⚠️ ACTION REQUIRED:** If you're seeing this after the initial setup, OAuth credentials were previously exposed in `.env.example`.
+
+### Compromised Credentials (Now Removed):
+- **Google OAuth:** Client ID `772531868978-...` and Secret `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`
+- **GitHub OAuth:** Client ID `Ov23linPWdAWLSWHZju9` and Secret `4ecc1d2a60d40917ca0a88d117f1649e536b53ba`
+
+### Immediate Actions:
+1. **Revoke Google OAuth:** Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials), delete the OAuth client
+2. **Revoke GitHub OAuth:** Go to [GitHub Settings](https://github.com/settings/developers), regenerate or delete the OAuth app
+3. **Remove from Git history:**
+   ```bash
+   brew install bfg
+   git clone --mirror https://github.com/YOUR_USERNAME/YOUR_REPO.git
+   cd YOUR_REPO.git
+   bfg --replace-text <(echo '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==>REMOVED')
+   bfg --replace-text <(echo '4ecc1d2a60d40917ca0a88d117f1649e536b53ba==>REMOVED')
+   git reflog expire --expire=now --all && git gc --prune=now --aggressive
+   git push --force
+   ```
+
+**After revocation, delete this alert section from SECURITY.md**
+
+---
+
 ## Secret Management
 
 ### ⚠️ CRITICAL: Never commit secrets to Git!

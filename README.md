@@ -42,8 +42,8 @@ nano .env  # or use your preferred editor
 
 See `OAUTH_SETUP.md` for detailed instructions on obtaining OAuth2 credentials.
 
-**📖 Security Documentation:**
-- `SECURITY.md` - Complete security guide
+**📖 Documentation:**
+- `SECURITY.md` - Security guide & credential alert
 - `OAUTH_SETUP.md` - OAuth provider setup
 - `.env.template` - Environment variable template
 
@@ -206,6 +206,21 @@ git push heroku main
 2. Add environment variables in Railway dashboard
 3. Deploy automatically on push
 
+### Deploy Frontend to GitHub Pages
+
+**Setup GitHub Secrets:**
+1. Go to Repository Settings → Secrets and variables → Actions
+2. Add secrets:
+   - `REACT_APP_API_URL`: Your backend URL (e.g., `https://your-app.herokuapp.com`)
+   - `PUBLIC_URL`: Your repo name (e.g., `/your-repo-name`)
+
+**Enable GitHub Pages:**
+1. Go to Settings → Pages
+2. Source: Select "GitHub Actions"
+3. Push to main branch to trigger deployment
+
+**Workflow:** `.github/workflows/deploy-frontend.yml` (already configured)
+
 ### Environment Variables for Production
 
 ⚠️ **IMPORTANT:** Never commit production secrets to Git!
@@ -229,7 +244,7 @@ JWT_SECRET=your-strong-secret-key-here
 CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
 ```
 
-**📖 See `SECURITY.md` for complete deployment security guide**
+**📖 See `SECURITY.md` for security best practices**
 
 ## 📝 Project Structure
 
